@@ -2,13 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 export default function Sidebar(props) {
 
-    const resultElements = props.results.map((result, index) => (
+    const resultElements = props.results.map((result) => (
         <div key={result.id} >
             <div className="result">
                 <button className="result-delete-btn" onClick={() => props.deleteResult(result.id)}>
                     <FontAwesomeIcon icon={faXmark} className="icon-delete-btn"/>
                 </button>
-                <p>{result.text} {result.value} üh</p>
+                <p>{result.text}</p>
+                <p className="result-values">{result.value}üh</p>
+                
             </div>
             <div className="result-inputs">
                 <p>{result.numOne}g {result.numTwo}sv</p>

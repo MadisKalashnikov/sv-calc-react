@@ -98,33 +98,35 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button {
     height: 300px;
     width: 190px;
     overflow-y: auto;
+    word-break: break-all;
+    align-items: center;
 }
 .result {
     color: white;
     display: flex;
-    justify-content: space-around;
     align-items: center;
     padding: 8px 0px;
     gap: 5px;
+    width: 175px;
+}
+.result-values {
+    justify-self: flex-end;
+    margin-left: auto;
 }
 .result-inputs {
     color: white;
-    gap: 5px;
     text-align: right;
-
 }
 /* delete results */
 .result-delete-btn {
-    width: auto;
-    height: auto;
-    background-color: transparent;
-    border: none;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    left: 10px;
+    background-color: transparent;
+    color: white;
+    width: auto;
+    height: auto;
+    border: none;
 }
 .delete-all-btn {
     margin-top: 15px;
@@ -132,6 +134,8 @@ input::-webkit-inner-spin-button, input::-webkit-outer-spin-button {
 /* close sidebar */
 .icon-delete-btn {
     font-size: 25px;
+    align-self: flex-start;
+    justify-self: flex-start;
 }
 .icon-delete-btn:active {
     border: none;

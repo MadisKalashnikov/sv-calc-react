@@ -24,7 +24,7 @@ export default function App() {
       [name]: value
     }))
   }
-  // setsum when inputs change
+  // set sum when inputs change
   useEffect(() => {
       const {numOne, numTwo, numThree} = inputsState
       setSumState(((numOne * numTwo * numThree) / 1000).toFixed(2))
@@ -32,6 +32,7 @@ export default function App() {
   
   // add to table conditions
   const resultToTableArr = () => {
+    if (sumState < 0.01) return;
     const newNumber = {
       id: nanoid(),
       value: sumState,
@@ -39,8 +40,7 @@ export default function App() {
       numTwo: inputsState.numTwo,
       text: inputsState.strFood
     }
-    if (sumState < 0.01) return;
-
+    // push new number into tableArr
     setTableArrState(prevState => [...prevState, newNumber])
     // show textElement for 1 second after successful newNumber
     const textElement = document.querySelector(".success")
@@ -48,7 +48,6 @@ export default function App() {
       textElement.classList.toggle("show-success")
     }, 1000);
     textElement.classList.toggle("show-success")
-    
   }
   // get only number values from tableArr
   const resultsArr = tableArrState.map((number) => parseFloat(number.value))
