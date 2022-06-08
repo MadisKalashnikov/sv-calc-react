@@ -2,35 +2,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 export default function Sidebar(props) {
 
-    const numberElements = props.numbers.map((number, index) => (
-        <div key={number.id} >
-            <div className="number">
-                <button className="btn-delete" onClick={() => props.deleteNumber(number.id)}>
-                    <FontAwesomeIcon icon={faXmark} className="icon-delete"/>
+    const resultElements = props.results.map((result, index) => (
+        <div key={result.id} >
+            <div className="result">
+                <button className="result-delete-btn" onClick={() => props.deleteResult(result.id)}>
+                    <FontAwesomeIcon icon={faXmark} className="icon-delete-btn"/>
                 </button>
-                <p>{number.text}</p>
-                <p>{number.value} üh</p>
-                <p>{number.valueOne}g</p>
-                <p>{number.valueTwo}sv</p>
+                <p>{result.text} {result.value} üh</p>
+            </div>
+            <div className="result-inputs">
+                <p>{result.numOne}g {result.numTwo}sv</p>
             </div>
         </div>
     ))
     const sidebarClasses = document.querySelector(".sidebar")
-    const closeIconClasses = document.querySelector(".close-icon")
     function closeSide() {
         sidebarClasses.classList.toggle("show-sidebar")
-        closeIconClasses.classList.toggle("show-icon")
     }
     return (
         <nav className="sidebar">
-            <div className="sum-text-div">
+            <div className="sidebar-sum">
                 <p className="sum-text">Kokku {props.sum} üh</p>
             </div>
-            <div id="numbers-table">
-                {numberElements}
+            <div id="results-table">
+                {resultElements}
             </div>
-            <button onClick={props.deleteAll} className="delete-all">Kustuta kõik</button>
-            <FontAwesomeIcon icon={faXmark} onClick={closeSide} className="close-icon"/>
+            <button onClick={props.deleteAllResults} className="delete-all-btn">Kustuta kõik</button>
+            <FontAwesomeIcon icon={faXmark} onClick={closeSide} className="close-sidebar-btn"/>
         </nav> 
     )
 }

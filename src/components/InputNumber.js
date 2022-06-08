@@ -1,10 +1,10 @@
-export default function InputNumber(props) {
+export default function InputNumber({name, change, placeholder}) {
   return (
     <input 
         type="number"
-        name={props.name}
-        onChange={props.change}
-        placeholder={props.placeholder}
+        name={name}
+        onChange={change}
+        placeholder={placeholder}
       >
     </input>
   );

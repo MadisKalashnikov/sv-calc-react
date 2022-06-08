@@ -6,116 +6,113 @@ import Sidebar from './Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars} from '@fortawesome/free-solid-svg-icons';
 export default function App() {
-  // state for inputs
-  const [inputs, setInputs] = useState({
-    one: 0,
-    two: 0,
-    three: 0
+  // states
+  const [inputsState, setInputsState] = useState({
+    numOne: 0,
+    numTwo: 0,
+    numThree: 0,
+    strFood: ""
   })
+  const [sumState, setSumState] = useState(0)
+  const [allSumState, setAllSumState] = useState(0)
+  const [tableArrState, setTableArrState] = useState([])
   // on change set values equal to input values
-  function change(event) {
+  console.log(inputsState)
+  // on input change set inputs equal to value in input
+  const onChange = (event) => {
     const {name, value} = event.target
-    setInputs(prevState => ({
+    setInputsState(prevState => ({
       ...prevState,
       [name]: value
     }))
   }
-  // state for sum
-  const [sum, setSum] = useState(0)
   // setsum when inputs change
   useEffect(() => {
-      const {one, two, three} = inputs
-      setSum((one * two * three / 1000).toFixed(2))
-  }, [inputs])
-  // state for tablearr
-  const [tableArr, setTableArr] = useState([])
+      const {numOne, numTwo, numThree} = inputsState
+      setSumState(((numOne * numTwo * numThree) / 1000).toFixed(2))
+  }, [inputsState])
+  
   // add to table conditions
-  function toTable() {
+  const resultToTableArr = () => {
     const newNumber = {
       id: nanoid(),
-      value: sum,
-      text: textState,
-      valueOne: inputs.one,
-      valueTwo: inputs.two
+      value: sumState,
+      numOne: inputsState.numOne,
+      numTwo: inputsState.numTwo,
+      text: inputsState.strFood
     }
-    if (sum < 0.01) {
-      setTableArr(prevState => [...prevState])
-    } else {
-      setTableArr(prevState => [...prevState, newNumber])
-      setTimeout(() => {
-        textElement.classList.toggle("show-success")
-      }, 1000);
+    if (sumState < 0.01) return;
+
+    setTableArrState(prevState => [...prevState, newNumber])
+    // show textElement for 1 second after successful newNumber
+    const textElement = document.querySelector(".success")
+    setTimeout(() => {
       textElement.classList.toggle("show-success")
-    }
-  }
-  const [textState, setTextState] = useState()
-  function textInput(event) {
-    setTextState(event.target.value)
-  }
-
-  // state for the whole sum
-  const [allSum, setAllSum] = useState(0)
-  // get only number values from tableArr
-  const tableNumbers = tableArr.map(number => parseFloat(number.value))
-  // when tablearr and tablenumbers change, set the whole sum equal to sum of all numbers in table
-  useEffect(() => { 
-    setAllSum(tableNumbers.reduce((a, b) => a + b, 0).toFixed(2))
-  }, [tableArr, tableNumbers])
-
-  // delete number from list
-  function deleteNumber(index) {
-    setTableArr(prevState => prevState.filter(item => item.id !== index))
-  }
-  function deleteAllNumbers() {
-    if (tableArr.length > 0) {
-      setTableArr([])
-    } else {
-      setTableArr(prevState => [...prevState])
-    }
+    }, 1000);
+    textElement.classList.toggle("show-success")
     
   }
-  function openSide() {
+  // get only number values from tableArr
+  const resultsArr = tableArrState.map((number) => parseFloat(number.value))
+  // when results change, set the sumState equal to sum of all numbers in resultsArr
+  useEffect(() => {
+    setAllSumState(resultsArr.reduce((a, b) => a + b, 0).toFixed(2))
+  }, [resultsArr])
+
+  const openSide = () => {
     const sidebarClasses = document.querySelector(".sidebar")
-    const closeIconClasses = document.querySelector(".close-icon")
     sidebarClasses.classList.toggle("show-sidebar")
-    closeIconClasses.classList.toggle("show-icon")
   }
-  const textElement = document.querySelector(".success")
+  // delete result from tableArr
+  const deleteResult = (index) => {
+    if (index < 0) return;
+    setTableArrState(prevState => prevState.filter(item => item.id !== index))
+  }
+  // delete all results from tableArr
+  const deleteAllResults = () => {
+    if (tableArrState.length > 0) {
+      setTableArrState([])
+    } else {
+      setTableArrState(prevState => [...prevState])
+    }
+  }
   return (
     <div className='main'>
       <FontAwesomeIcon icon={faBars} className="open-icon" onClick={openSide} />
-      <Sidebar 
-        numbers={tableArr}
-        sum={allSum}
-        deleteNumber={deleteNumber}
-        text={tableArr.text}
-        deleteAll={deleteAllNumbers}
-        valueOne={inputs.one}
-        valueTwo={inputs.two}
+      <Sidebar
+        text={tableArrState.text}
+        sum={allSumState}
+        results={tableArrState}
+        numOne={inputsState.numOne}
+        numTwo={inputsState.numTwo}
+        deleteResult={deleteResult}
+        deleteAllResults={deleteAllResults}
+        
       />
       <p>Kalkulaator</p>
       <InputNumber 
-        name="one"
-        value={inputs.one}
-        change={change}
+        name="numOne"
+        value={inputsState.one}
+        change={onChange}
         placeholder="Grammid"
       />
       <InputNumber 
-        name="two"
-        value={inputs.two}
-        change={change}
+        name="numTwo"
+        value={inputsState.numTwo}
+        change={onChange}
         placeholder="Süsivesikud"
       />
       <p>Korruta</p>
       <InputNumber 
-        name="three"
-        value={inputs.three}
-        change={change}
+        name="numThree"
+        value={inputsState.numThree}
+        change={onChange}
       />
-      <p className='food-text'>Leivaühikud <span className='bold'>{sum}</span></p>
+      <p>Leivaühikud <span className='bold'>{sumState}</span></p>
       <p>Toit</p>
-      <input onChange={textInput} type="text" id='food-input'></input>
-      <button onClick={toTable} id="to-table">Lisa tabelisse</button>
+      <input onChange={onChange} type="text" id="food-input"
+      name="strFood"></input>
+      <button onClick={resultToTableArr} id="to-table">Lisa tabelisse</button>
       <p className='success'>Lisatud tabelisse!</p>
       
     </div>
