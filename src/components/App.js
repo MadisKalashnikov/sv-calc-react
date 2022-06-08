@@ -16,8 +16,6 @@ export default function App() {
   const [sumState, setSumState] = useState(0)
   const [allSumState, setAllSumState] = useState(0)
   const [tableArrState, setTableArrState] = useState([])
-  // on change set values equal to input values
-  console.log(inputsState)
   // on input change set inputs equal to value in input
   const onChange = (event) => {
     const {name, value} = event.target
